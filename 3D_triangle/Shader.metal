@@ -34,3 +34,8 @@ fragment float4 triangle_fragment_main()
 {
     return float4(1.0, 0.0, 0.0, 1.0);
 }
+
+fragment float4 triangle_edge_fragment_main()
+{
+    return float4(1.0, 1.0, 1.0, 1.0);
+}

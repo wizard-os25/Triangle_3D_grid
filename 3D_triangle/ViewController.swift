@@ -351,8 +351,6 @@ final class ViewController: UIViewController, MTKViewDelegate {
         commandBuffer.present(drawable)
         commandBuffer.commit()
     }
-
-    
 }
 
 

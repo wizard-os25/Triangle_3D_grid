@@ -12,12 +12,15 @@ class TriangleRenderer {
     var device: MTLDevice!
     var triangleVertexBuffer: MTLBuffer!
     var triangleIndexBuffer: MTLBuffer!
+    var triangleEdgeIndexBuffer: MTLBuffer!
     var triangleUniformBuffer: MTLBuffer!
     var trianglePipelineState: MTLRenderPipelineState!
+    var triangleEdgePipelineState: MTLRenderPipelineState!
     
     // Hình hộp tam giác vertices (4 điểm: 1 đỉnh trên + 3 đỉnh đáy)
     var triangleVertices: [SIMD3<Float>] = []
     var triangleIndices: [UInt16] = []
+    var triangleEdgeIndices: [UInt16] = []
     
     init(device: MTLDevice) {
         self.device = device
@@ -73,6 +76,23 @@ class TriangleRenderer {
         triangleIndexBuffer = device.makeBuffer(bytes: triangleIndices,
                                                length: MemoryLayout<UInt16>.stride * triangleIndices.count,
                                                options: [])
+        
+        // Tạo edge indices cho viền đen
+        // 6 cạnh: 3 cạnh từ đỉnh đến đáy + 3 cạnh của mặt đáy
+        triangleEdgeIndices = [
+            // 3 cạnh từ đỉnh (0) đến các đỉnh đáy
+            0, 1,  // đỉnh -> đỉnh đáy 1
+            0, 2,  // đỉnh -> đỉnh đáy 2
+            0, 3,  // đỉnh -> đỉnh đáy 3
+            // 3 cạnh của mặt đáy tam giác
+            1, 2,  // đỉnh đáy 1 -> đỉnh đáy 2
+            2, 3,  // đỉnh đáy 2 -> đỉnh đáy 3
+            3, 1   // đỉnh đáy 3 -> đỉnh đáy 1
+        ]
+        
+        triangleEdgeIndexBuffer = device.makeBuffer(bytes: triangleEdgeIndices,
+                                                    length: MemoryLayout<UInt16>.stride * triangleEdgeIndices.count,
+                                                    options: [])
     }
     
     func setupPipeline() {
@@ -95,6 +115,16 @@ class TriangleRenderer {
         descriptor.depthAttachmentPixelFormat = .depth32Float
         
         trianglePipelineState = try! device.makeRenderPipelineState(descriptor: descriptor)
+        
+        // Setup pipeline state cho viền đen
+        let edgeDescriptor = MTLRenderPipelineDescriptor()
+        edgeDescriptor.vertexFunction = library?.makeFunction(name: "vertex_main")
+        edgeDescriptor.fragmentFunction = library?.makeFunction(name: "triangle_edge_fragment_main")
+        edgeDescriptor.vertexDescriptor = vertexDescriptor
+        edgeDescriptor.colorAttachments[0].pixelFormat = .bgra8Unorm
+        edgeDescriptor.depthAttachmentPixelFormat = .depth32Float
+        
+        triangleEdgePipelineState = try! device.makeRenderPipelineState(descriptor: edgeDescriptor)
     }
     
     func updateUniforms(view: matrix_float4x4, proj: matrix_float4x4, model: matrix_float4x4? = nil) {
@@ -117,16 +147,28 @@ class TriangleRenderer {
     }
     
     func render(encoder: MTLRenderCommandEncoder) {
+        // Vẽ tam giác đỏ (filled)
         encoder.setRenderPipelineState(trianglePipelineState)
         encoder.setVertexBuffer(triangleVertexBuffer, offset: 0, index: 0)
         encoder.setVertexBuffer(triangleUniformBuffer, offset: 0, index: 1)
         encoder.setFragmentBuffer(triangleUniformBuffer, offset: 0, index: 1)
         
-        // Vẽ hình hộp tam giác với index buffer
         encoder.drawIndexedPrimitives(type: .triangle,
                                       indexCount: triangleIndices.count,
                                       indexType: .uint16,
                                       indexBuffer: triangleIndexBuffer,
+                                      indexBufferOffset: 0)
+        
+        // Vẽ viền đen (wireframe)
+        encoder.setRenderPipelineState(triangleEdgePipelineState)
+        encoder.setVertexBuffer(triangleVertexBuffer, offset: 0, index: 0)
+        encoder.setVertexBuffer(triangleUniformBuffer, offset: 0, index: 1)
+        encoder.setFragmentBuffer(triangleUniformBuffer, offset: 0, index: 1)
+        
+        encoder.drawIndexedPrimitives(type: .line,
+                                      indexCount: triangleEdgeIndices.count,
+                                      indexType: .uint16,
+                                      indexBuffer: triangleEdgeIndexBuffer,
                                       indexBufferOffset: 0)
     }
     
@@ -137,5 +179,8 @@ class TriangleRenderer {
         triangleVertexBuffer = device.makeBuffer(bytes: triangleVertices,
                                                 length: MemoryLayout<SIMD3<Float>>.stride * triangleVertices.count,
                                                 options: [])
+        
+        // Edge indices không thay đổi vì cấu trúc vẫn giữ nguyên
+        // (đỉnh 0 + 3 đỉnh đáy 1, 2, 3)
     }
 }
