@@ -25,6 +25,11 @@ final class ViewController: UIViewController, MTKViewDelegate {
     // Triangle renderer
     var triangleRenderer: TriangleRenderer!
     
+    // Camera rotation
+    var cameraRotationY: Float = 0.0  // Yaw (quay quanh trục Y)
+    var cameraRotationX: Float = 0.0  // Pitch (quay lên/xuống)
+    var cameraDistance: Float = 8.0    // Khoảng cách từ camera đến gốc tọa độ
+    
     // Buffers
     var gridVertexBuffer: MTLBuffer!
     var axisXVertexBuffer: MTLBuffer!
@@ -92,6 +97,47 @@ final class ViewController: UIViewController, MTKViewDelegate {
         generateGridVertices()
         setupMetal()
         setupPipeline()
+        setupGestures()
+    }
+    
+    func setupGestures() {
+        // Thêm pan gesture để quay camera
+        let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan(_:)))
+        metalView.addGestureRecognizer(panGesture)
+        
+        // Thêm pinch gesture để zoom
+        let pinchGesture = UIPinchGestureRecognizer(target: self, action: #selector(handlePinch(_:)))
+        metalView.addGestureRecognizer(pinchGesture)
+    }
+    
+    @objc func handlePan(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: metalView)
+        
+        // Tính toán góc quay dựa trên movement
+        let sensitivity: Float = 0.01
+        cameraRotationY += Float(translation.x) * sensitivity
+        cameraRotationX += Float(translation.y) * sensitivity
+        
+        // Giới hạn pitch để tránh quay quá mức
+        cameraRotationX = max(-Float.pi / 2 + 0.1, min(Float.pi / 2 - 0.1, cameraRotationX))
+        
+        // Reset translation để tính relative movement
+        gesture.setTranslation(.zero, in: metalView)
+        
+        // Cập nhật view
+        updateUniforms()
+    }
+    
+    @objc func handlePinch(_ gesture: UIPinchGestureRecognizer) {
+        if gesture.state == .changed {
+            // Thay đổi khoảng cách camera
+            let scale = Float(gesture.scale)
+            cameraDistance *= (1.0 / scale)
+            cameraDistance = max(2.0, min(20.0, cameraDistance))  // Giới hạn khoảng cách
+            
+            gesture.scale = 1.0  // Reset scale
+            updateUniforms()
+        }
     }
     
     override func viewDidLayoutSubviews() {
@@ -110,6 +156,7 @@ final class ViewController: UIViewController, MTKViewDelegate {
         metalView.colorPixelFormat = .bgra8Unorm
         metalView.depthStencilPixelFormat = .depth32Float
         metalView.preferredFramesPerSecond = 60
+        metalView.isUserInteractionEnabled = true  // Enable để nhận gesture
         view.addSubview(metalView)
         
         // Khởi tạo triangle renderer
@@ -165,8 +212,18 @@ final class ViewController: UIViewController, MTKViewDelegate {
     
     func updateUniforms() {
         let aspect = Float(metalView.bounds.width / max(metalView.bounds.height, 1.0))
-        // Camera nhìn từ góc cao để thấy rõ grid
-        let viewMatrix = matrix_float4x4(eye: SIMD3<Float>(8, 8, 8), center: SIMD3<Float>(0,0,0), up: SIMD3<Float>(0,1,0))
+        
+        // Tính toán vị trí camera dựa trên rotation
+        let eyeX = cameraDistance * cos(cameraRotationX) * sin(cameraRotationY)
+        let eyeY = cameraDistance * sin(cameraRotationX)
+        let eyeZ = cameraDistance * cos(cameraRotationX) * cos(cameraRotationY)
+        
+        let eye = SIMD3<Float>(eyeX, eyeY, eyeZ)
+        let center = SIMD3<Float>(0, 0, 0)
+        let up = SIMD3<Float>(0, 1, 0)
+        
+        // Camera nhìn từ vị trí được tính toán
+        let viewMatrix = matrix_float4x4(eye: eye, center: center, up: up)
         let projMatrix = matrix_float4x4(perspectiveDegrees: 60,
                                          aspect: aspect,
                                          near: 0.1, far: 100)
