@@ -6,30 +6,29 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		D0A158372EE2970600E1FD51 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A158352EE2970600E1FD51 /* ViewController.swift */; };
+		D0A158382EE2970600E1FD51 /* TriangleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A158342EE2970600E1FD51 /* TriangleViewController.swift */; };
+		D0A158392EE2970600E1FD51 /* Shader.metal in Sources */ = {isa = PBXBuildFile; fileRef = D0A158322EE2970600E1FD51 /* Shader.metal */; };
+		D0A1583A2EE2970600E1FD51 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = D0A1582A2EE2970600E1FD51 /* AppDelegate.swift */; };
+		D0A1583C2EE2970600E1FD51 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = D0A1582B2EE2970600E1FD51 /* Assets.xcassets */; };
+		D0A1583D2EE2970600E1FD51 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0A158302EE2970600E1FD51 /* Main.storyboard */; };
+		D0A1583E2EE2970600E1FD51 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = D0A1582E2EE2970600E1FD51 /* LaunchScreen.storyboard */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXFileReference section */
+		D0A1582A2EE2970600E1FD51 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		D0A1582B2EE2970600E1FD51 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		D0A1582C2EE2970600E1FD51 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		D0A1582D2EE2970600E1FD51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		D0A1582F2EE2970600E1FD51 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		D0A158312EE2970600E1FD51 /* Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Bridging-Header.h"; sourceTree = "<group>"; };
+		D0A158322EE2970600E1FD51 /* Shader.metal */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.metal; path = Shader.metal; sourceTree = "<group>"; };
+		D0A158332EE2970600E1FD51 /* ShaderTypes.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ShaderTypes.h; sourceTree = "<group>"; };
+		D0A158342EE2970600E1FD51 /* TriangleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TriangleViewController.swift; sourceTree = "<group>"; };
+		D0A158352EE2970600E1FD51 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		D0A953332EE133E40000495F /* 3D_triangle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = 3D_triangle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
-
-/* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
-		D0A953452EE133E50000495F /* Exceptions for "3D_triangle" folder in "3D_triangle" target */ = {
-			isa = PBXFileSystemSynchronizedBuildFileExceptionSet;
-			membershipExceptions = (
-				Info.plist,
-			);
-			target = D0A953322EE133E40000495F /* 3D_triangle */;
-		};
-/* End PBXFileSystemSynchronizedBuildFileExceptionSet section */
-
-/* Begin PBXFileSystemSynchronizedRootGroup section */
-		D0A953352EE133E40000495F /* 3D_triangle */ = {
-			isa = PBXFileSystemSynchronizedRootGroup;
-			exceptions = (
-				D0A953452EE133E50000495F /* Exceptions for "3D_triangle" folder in "3D_triangle" target */,
-			);
-			path = 3D_triangle;
-			sourceTree = "<group>";
-		};
-/* End PBXFileSystemSynchronizedRootGroup section */
 
 /* Begin PBXFrameworksBuildPhase section */
 		D0A953302EE133E40000495F /* Frameworks */ = {
@@ -42,10 +41,27 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		D0A158362EE2970600E1FD51 /* 3D_triangle */ = {
+			isa = PBXGroup;
+			children = (
+				D0A1582A2EE2970600E1FD51 /* AppDelegate.swift */,
+				D0A1582B2EE2970600E1FD51 /* Assets.xcassets */,
+				D0A1582C2EE2970600E1FD51 /* Info.plist */,
+				D0A1582E2EE2970600E1FD51 /* LaunchScreen.storyboard */,
+				D0A158302EE2970600E1FD51 /* Main.storyboard */,
+				D0A158312EE2970600E1FD51 /* Bridging-Header.h */,
+				D0A158332EE2970600E1FD51 /* ShaderTypes.h */,
+				D0A158322EE2970600E1FD51 /* Shader.metal */,
+				D0A158342EE2970600E1FD51 /* TriangleViewController.swift */,
+				D0A158352EE2970600E1FD51 /* ViewController.swift */,
+			);
+			path = 3D_triangle;
+			sourceTree = "<group>";
+		};
 		D0A9532A2EE133E40000495F = {
 			isa = PBXGroup;
 			children = (
-				D0A953352EE133E40000495F /* 3D_triangle */,
+				D0A158362EE2970600E1FD51 /* 3D_triangle */,
 				D0A953342EE133E40000495F /* Products */,
 			);
 			sourceTree = "<group>";
@@ -72,9 +88,6 @@
 			buildRules = (
 			);
 			dependencies = (
-			);
-			fileSystemSynchronizedGroups = (
-				D0A953352EE133E40000495F /* 3D_triangle */,
 			);
 			name = 3D_triangle;
 			packageProductDependencies = (
@@ -122,6 +135,9 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A1583C2EE2970600E1FD51 /* Assets.xcassets in Resources */,
+				D0A1583D2EE2970600E1FD51 /* Main.storyboard in Resources */,
+				D0A1583E2EE2970600E1FD51 /* LaunchScreen.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -132,10 +148,33 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				D0A158372EE2970600E1FD51 /* ViewController.swift in Sources */,
+				D0A158382EE2970600E1FD51 /* TriangleViewController.swift in Sources */,
+				D0A158392EE2970600E1FD51 /* Shader.metal in Sources */,
+				D0A1583A2EE2970600E1FD51 /* AppDelegate.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		D0A1582E2EE2970600E1FD51 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0A1582D2EE2970600E1FD51 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+		D0A158302EE2970600E1FD51 /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				D0A1582F2EE2970600E1FD51 /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		D0A953472EE133E50000495F /* Debug */ = {
@@ -161,7 +200,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = co.wizard.architect.3D_triangle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "3D_triangle/ProjectName-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "3D_triangle/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -190,7 +229,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = co.wizard.architect.3D_triangle;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_EMIT_LOC_STRINGS = YES;
-				SWIFT_OBJC_BRIDGING_HEADER = "3D_triangle/ProjectName-Bridging-Header.h";
+				SWIFT_OBJC_BRIDGING_HEADER = "3D_triangle/Bridging-Header.h";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};

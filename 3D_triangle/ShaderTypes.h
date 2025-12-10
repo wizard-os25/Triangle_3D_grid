@@ -17,5 +17,5 @@ typedef struct {
     matrix_float4x4 model;
     matrix_float4x4 view;
     matrix_float4x4 proj;
-    int isAxis;  // 1 nếu đang render trục, 0 nếu render grid
+    int isAxis;
 } Uniforms;
